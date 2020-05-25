@@ -33,10 +33,10 @@ public class TwitterProducer {
         logger.info("Start");
 
         // https://github.com/twitter/hbc
-        String consumerKey = "k";
-        String consumerSecret = "s";
-        String token = "t";
-        String tokenSecret = "ts";
+        String consumerKey = "";
+        String consumerSecret = "";
+        String token = "";
+        String tokenSecret = "";
         List<String> terms = Lists.newArrayList("Korea");
 
         /** Set up your blocking queues: Be sure to size these properly based on expected TPS of your stream */
@@ -126,6 +126,13 @@ public class TwitterProducer {
         properties.setProperty(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServer);
         properties.setProperty(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         properties.setProperty(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
+
+        // create safe producer
+        properties.setProperty(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, "true");
+        properties.setProperty(ProducerConfig.ACKS_CONFIG, "all");
+        properties.setProperty(ProducerConfig.RETRIES_CONFIG, Integer.toString(Integer.MAX_VALUE));
+        properties.setProperty(ProducerConfig.MAX_IN_FLIGHT_REQUESTS_PER_CONNECTION, "5");
+
 
         KafkaProducer<String, String> producer = new KafkaProducer<String, String>(properties);
         return producer;
