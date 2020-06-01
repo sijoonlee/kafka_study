@@ -35,9 +35,7 @@ public class ElasticSearchConsumer {
 
     public static RestHighLevelClient createClient(){
         RestHighLevelClient client = new RestHighLevelClient(
-                RestClient.builder(
-                        new HttpHost("localhost", 9200, "http")));
-
+                RestClient.builder(new HttpHost("localhost", 9200, "http")));
         return client;
     }
 
@@ -64,11 +62,13 @@ public class ElasticSearchConsumer {
 
     }
 
-    private static JsonParser jsonParser = new JsonParser();
+    // private static JsonParser jsonParser = new JsonParser();
+    // https://stackoverflow.com/questions/60771386/jsonparser-is-deprecated
+    // No need to instantiate this class, use the static methods instead.
 
     private static String extractIdFromTweet(String tweetJson){
         // gson library
-        return jsonParser.parse(tweetJson)
+        return JsonParser.parseString(tweetJson)
                 .getAsJsonObject()
                 .get("id_str")
                 .getAsString();
@@ -87,7 +87,7 @@ public class ElasticSearchConsumer {
             Integer recordCount = records.count();
             logger.info("Received " + recordCount + " records");
 
-            BulkRequest bulkRequest = new BulkRequest();
+            BulkRequest bulkRequest = new BulkRequest(); // to use batch
 
             for (ConsumerRecord<String, String> record : records){
 
@@ -101,15 +101,6 @@ public class ElasticSearchConsumer {
 
                     // where we insert data into ElasticSearch
 
-                    /**
-                     * Uncomment this code if you are using elastic search version < 7.0
-                     IndexRequest indexRequest = new IndexRequest(
-                     "twitter",
-                     "tweets",
-                     id // this is to make our consumer idempotent
-                     ).source(record.value(), XContentType.JSON);
-                     */
-
                     /** Added for ElasticSearch >= v7.0
                      * The API to add data into ElasticSearch has slightly changes
                      * and therefore we must use this new method.
@@ -118,7 +109,7 @@ public class ElasticSearchConsumer {
                      * uncomment the code above if you use ElasticSearch 6.x or less
                      */
 
-                    IndexRequest indexRequest = new IndexRequest("tweets")
+                    IndexRequest indexRequest = new IndexRequest("twitter")
                             .source(record.value(), XContentType.JSON)
                             .id(id); // this is to make our consumer idempotent
 
@@ -132,7 +123,7 @@ public class ElasticSearchConsumer {
             if (recordCount > 0) {
                 BulkResponse bulkItemResponses = client.bulk(bulkRequest, RequestOptions.DEFAULT);
                 logger.info("Committing offsets...");
-                consumer.commitSync();
+                consumer.commitSync(); // manual commit
                 logger.info("Offsets have been committed");
                 try {
                     Thread.sleep(1000);

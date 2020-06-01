@@ -29,5 +29,12 @@ chmod g+rwx /var/lib/docker/volumes/elasticsearchdocker_data03/_data
 chgrp 0 /var/lib/docker/volumes/elasticsearchdocker_data03/_data
 
 
-4. put index 
-PUT /twitter
+4. put index 'twitter'
+In Postman
+Setting Header: 
+Key - Content-Type
+Value - application/json
+Method - PUT
+Address - http://localhost:9200/twitter/
+
+
