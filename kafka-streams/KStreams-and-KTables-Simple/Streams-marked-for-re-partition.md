@@ -1,0 +1,5 @@
+- As soon as an operation can possibly change a key, the stream will be marked for re-partition
+    - Map/FlatMap/SelectKey
+- if you don't need to change keys, use the counterparts
+    - MapValues/FlatMapValues
+- Re-partition is doen seamlessly behind the scene, but with performance cost

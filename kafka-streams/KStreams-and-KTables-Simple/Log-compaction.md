@@ -1,0 +1,1 @@
+- Log Compaction can be a huge improvement in performance
