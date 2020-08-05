@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/udemy-reviews-aggregator/udemy-reviews-aggregator.iml" filepath="$PROJECT_DIR$/udemy-reviews-aggregator/udemy-reviews-aggregator.iml" />
+      <module fileurl="file://$PROJECT_DIR$/udemy-reviews-fraud/udemy-reviews-fraud.iml" filepath="$PROJECT_DIR$/udemy-reviews-fraud/udemy-reviews-fraud.iml" />
+      <module fileurl="file://$PROJECT_DIR$/udemy-reviews-parent-project.iml" filepath="$PROJECT_DIR$/udemy-reviews-parent-project.iml" />
+      <module fileurl="file://$PROJECT_DIR$/udemy-reviews-producer/udemy-reviews-producer.iml" filepath="$PROJECT_DIR$/udemy-reviews-producer/udemy-reviews-producer.iml" />
+    </modules>
+  </component>
+</project>

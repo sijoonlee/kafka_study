@@ -2,4 +2,4 @@
     - Map/FlatMap/SelectKey
 - if you don't need to change keys, use the counterparts
     - MapValues/FlatMapValues
-- Re-partition is doen seamlessly behind the scene, but with performance cost
+- Re-partition is done seamlessly behind the scene, but with performance cost
