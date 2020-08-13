@@ -46,3 +46,28 @@ GROUP BY data_source;
 
 cf) use WindowStart/WindowEnd intead of WindowStart()/WindowEnd() since confluent 5.5.0
 cf) consider TOPKDISTINCT
+
+
+## GEO_DISTANCE
+
+- GEO_DISTANCE(lat1, long1, lat2, long2, unit)
+- Distance between two points
+- From and to both specified as (latitude, longitude) points
+- unit: kilometers or miles
+
+create stream requested_journey as
+select rr.latitude as from_latitude,
+rr.longitude as from_longitude,
+rr.user,
+rr.city_name as city_name,
+w.city_country,
+w.latitude as to_latitude,
+w.longitude as to_longitude,
+w.description as weather_description,
+w.rain
+from rr_world rr
+left join weathernow w on rr.city_name = w.city_name;
+
+create stream ridetodest as
+select user, GEO_DISTANCE(from_latitude, from_longitude, to_latitude, to_longitude, 'km') as dist
+from requested_journey;
